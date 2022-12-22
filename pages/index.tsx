@@ -37,7 +37,7 @@ function transformReducer(state: ITransformState, action:ITransformAction) {
 
 const Home: NextPage = () => {
   const [state, dispatch] = useReducer(transformReducer, {position: {x:0, y:0, z:0}});
-  const stateRedux = useSelector((state:RootState) => state.counter);
+  const stateRedux = useSelector((reduxState: RootState) => reduxState.rootState);
   const dispatchRedux = useDispatch<Dispatch>();
 
   function onChangeValue(evt:React.ChangeEvent<HTMLInputElement>) {
@@ -48,12 +48,21 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div>
+    <div suppressHydrationWarning>
       <p>counter</p>
-      <span>counter: {stateRedux}</span>
+      <span>is loading: {stateRedux!.isLoading?"on":"off"}</span>
       <button onClick={() => {
-        dispatchRedux.counter.incrementAsync(1);
-      }}>add counter</button>
+        dispatchRedux.rootState.setIsLoading(true);
+      }}> set loading on</button>
+      <button onClick={() => {
+        dispatchRedux.rootState.setIsLoading(false);
+      }}>set loading off</button>
+      <button onClick={() => {
+        dispatchRedux.rootState.setLoadingAsync(true);
+      }}>async set loading on</button>
+      <button onClick={() => {
+        dispatchRedux.rootState.setLoadingAsync(false);
+      }}>async set loading off</button>
       <p>Position</p>
       <span>X:<input type={"number"} value={state.position.x} name={"position.x"} onChange={onChangeValue} /></span>
       <span>Y:<input type={"number"} value={state.position.y} name={"position.y"} onChange={onChangeValue} /></span>

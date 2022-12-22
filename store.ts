@@ -1,8 +1,8 @@
 import { init, RematchDispatch, RematchRootState } from "@rematch/core";
 import { models, RootModel } from "./model";
 
-export const store = init({
-    models
+export const store = init<RootModel>({
+    models,
 })
 
 export type Store = typeof store;

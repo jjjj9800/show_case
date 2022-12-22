@@ -1,17 +1,24 @@
 import { createModel } from "@rematch/core";
 import type {RootModel} from '.';
 
-export type counterState = number;
+export type rootState = {
+    isLoading: boolean
+};
 
-export const counter = createModel<RootModel>() ({
-    state: 0,
+
+export const rootState = createModel<RootModel>() ({
+    state: {
+        isLoading: false
+    },
     reducers: {
-        increment: (state, payload: number) => state + payload
+        setIsLoading(state, payload: boolean) {
+            return { ...state, isLoading: payload}
+        }
     },
     effects: (dispatch) => ({
-        async incrementAsync(payload: number): Promise<void> {
+        async setLoadingAsync(payload: boolean): Promise<void> {
             await delay(500);
-            dispatch.counter.increment(payload)
+            dispatch.rootState.setIsLoading(payload)
         }
     })
 })
